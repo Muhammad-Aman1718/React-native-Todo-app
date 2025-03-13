@@ -1,11 +1,11 @@
 import auth from '@react-native-firebase/auth';
-import {Alert} from 'react-native';
+import toast from 'react-hot-toast';
 
 const useSignOut = () => {
   const userSignOut = () => {
     auth()
       .signOut()
-      .then(() => Alert.alert('User signed out!'))
+      .then(() => toast.success('User signed out!'))
       .catch(error => console.error('Error signing out:', error));
   };
 

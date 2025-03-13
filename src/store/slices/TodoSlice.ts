@@ -14,7 +14,7 @@ export const addTodo = createAsyncThunk<TodoData, TodoData>(
     try {
       const docRef = await firestore().collection('Todos').add(data);
       return {...data, id: docRef.id};
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error adding Todo:', error);
       return thunkAPI.rejectWithValue('Failed to add Todo');
     }
@@ -45,7 +45,7 @@ export const getTodos = createAsyncThunk<TodoData[], void>(
       } else {
         throw new Error('User not login!');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error getting Todos:', error);
       return thunkAPI.rejectWithValue('Failed to fetch Todos');
     }
@@ -58,7 +58,7 @@ export const updateTodo = createAsyncThunk<TodoData, TodoData>(
     try {
       await firestore().collection('Todos').doc(data.id).update(data);
       return data;
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error updating Todo:', error);
       return thunkAPI.rejectWithValue('Failed to update Todo');
     }
@@ -72,7 +72,7 @@ export const deleteTodo = createAsyncThunk<
   try {
     await firestore().collection('Todos').doc(id).delete();
     return id;
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error deleting Todo:', error);
     return thunkAPI.rejectWithValue('Failed to delete Todo');
   }

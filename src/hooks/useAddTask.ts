@@ -3,9 +3,9 @@ import {addTodo} from '../store/slices/TodoSlice';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import {NativePropsHome} from '../types/types';
-import {Alert} from 'react-native';
 import {useAppDispatch} from './useRedux';
 import moment from 'moment';
+import toast from 'react-hot-toast';
 
 const useAddTask = () => {
   const dispatch = useAppDispatch();
@@ -22,32 +22,30 @@ const useAddTask = () => {
   };
 
   const handleAddTask = () => {
-    if (title === undefined || title?.trim() === '') {
-      Alert.alert('Title is required');
-      return;
-    }
-    if (title.length <= 3) {
-      Alert.alert('Title should be at least 4 characters long');
-      return;
-    }
-    if (notes === undefined || notes.trim() === '') {
-      Alert.alert('Notes are required');
-      return;
-    }
-    if (notes.length <= 5) {
-      Alert.alert('Notes should be at least 6 characters long');
-      return;
-    }
-    if (selectedTag === '- Select tags -') {
-      Alert.alert('Please select a valid tag');
-      return;
-    }
-    if (!date) {
-      Alert.alert('Please select a date');
-      return;
-    }
-    if (new Date(date) < new Date()) {
-      Alert.alert('You cannot select a past date');
+    if (
+      !title?.trim() ||
+      title.length <= 3 ||
+      !notes?.trim() ||
+      notes.length <= 5 ||
+      selectedTag === '- Select tags -' ||
+      !date ||
+      new Date(date) < new Date()
+    ) {
+      toast.error(
+        !title?.trim()
+          ? 'Title is required'
+          : title.length <= 3
+          ? 'Title should be at least 4 characters long'
+          : !notes?.trim()
+          ? 'Notes are required'
+          : notes.length <= 5
+          ? 'Notes should be at least 6 characters long'
+          : selectedTag === '- Select tags -'
+          ? 'Please select a valid tag'
+          : !date
+          ? 'Please select a date'
+          : 'You cannot select a past date',
+      );
       return;
     }
 

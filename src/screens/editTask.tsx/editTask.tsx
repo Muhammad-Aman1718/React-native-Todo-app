@@ -1,23 +1,16 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Button from '../../components/button/Button';
 import InputField from '../../components/input/InputField';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Picker} from '@react-native-picker/picker';
 import Header from '../../components/header/Header';
 import useEditTask from '../../hooks/useEditTask';
-import moment from 'moment';
 import {COLORS} from '../../constant/colors';
 import {styles} from './editTaskStyle';
 import modleFunction from '../../components/model/Model';
 
 const EditTask = () => {
-  const [show, setShow] = useState<boolean>(false);
   const {
     title,
     setTitle,
@@ -25,15 +18,12 @@ const EditTask = () => {
     setNotes,
     selectedTag,
     setSelectedTag,
-    date,
+    newDate,
+    show,
+    setShow,
+    showDatePicker,
     handleEditTask,
   } = useEditTask();
-
-  const newDate = moment(date).format('MMM DD, YYYY');
-
-  const showDatePicker = () => {
-    setShow(true);
-  };
 
   return (
     <View style={styles.container}>

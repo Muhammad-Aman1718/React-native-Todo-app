@@ -1,29 +1,15 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
-import UseSignOut from '../../hooks/useSignOut';
-import {getUser} from '../../store/slices/AuthSlice';
-import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {useNavigation} from '@react-navigation/native';
-import {navigationProps} from '../../types/types';
 import {COLORS} from '../../constant/colors';
 import {styles} from './profileStyle';
 import {IMAGES} from '../../constant/images';
 import {SCREEN} from '../../constant/screens';
+import useProfile from '../../hooks/useProfile';
 
 const Profile = () => {
-  const user = useAppSelector(state => state.authReducer.user);
-  const {userSignOut} = UseSignOut();
-  const dispatch = useAppDispatch();
-
-  const navigation = useNavigation<navigationProps>();
-
-  useEffect(() => {
-    dispatch(getUser())
-      .unwrap()
-      .catch(error => {});
-  }, [dispatch]);
+  const {user, userSignOut, navigation} = useProfile();
 
   return (
     <View style={styles.container}>

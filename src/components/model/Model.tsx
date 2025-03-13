@@ -11,14 +11,11 @@ import {Calendar} from 'react-native-calendars';
 import Button from '../button/Button';
 import moment from 'moment';
 import {styles} from '../../screens/editTask.tsx/editTaskStyle';
-import {useState} from 'react';
-import useEditTask from '../../hooks/useEditTask';
 import {DayEvent} from '../../types/types';
+import useModel from '../../hooks/useModel';
 
 const modleFunction = () => {
-  const {date, setDate} = useEditTask();
-  const [show, setShow] = useState<boolean>(false);
-  const newDate = moment(date).format('MMM DD, YYYY');
+  const {date, setDate, show, setShow, newDate} = useModel();
 
   return (
     <Modal transparent={true} animationType="slide" visible={show}>

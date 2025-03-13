@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -9,6 +8,7 @@ import {
   UserDataState,
   Update,
 } from '../../types/types';
+import toast from 'react-hot-toast';
 
 const initialState: UserDataState = {
   uid: '',
@@ -23,13 +23,13 @@ export const signUpUser = createAsyncThunk<
   CreateUserResponseData,
   User,
   {rejectValue: string}
->('auth/signUpUser', async (user, {rejectWithValue}: any) => {
+>('auth/signUpUser', async (user, {rejectWithValue}) => {
   try {
     const userCredential = await auth().createUserWithEmailAndPassword(
       user.email,
       user.password,
     );
-    Alert.alert('Account is Created');
+    toast.success('Account is Created');
     const fullUserData = userCredential.user;
     await firestore().collection('users').doc(fullUserData.uid).set({
       fullName: user.fullName,
@@ -43,21 +43,20 @@ export const signUpUser = createAsyncThunk<
       email: fullUserData.email,
       phone: user.phone,
     };
-  } catch (error: any) {
-    if (error.code === 'auth/email-already-in-use') {
-      Alert.alert('Please try with diferent email, this email already exsits ');
+  } catch (error) {
+    if (error.code) {
+      toast.error(
+        error.code === 'auth/email-already-in-use'
+          ? 'Please try with a different email, this email already exists'
+          : error.code === 'auth/invalid-password'
+          ? 'Password should be at least 8 characters'
+          : error.code === 'auth/invalid-email'
+          ? 'This is an invalid email'
+          : 'An unknown error occurred',
+      );
     }
-    if (error.code === 'auth/invalid-password') {
-      Alert.alert('Password should be at least 8 characters');
-    }
-    if (error.code === 'auth/invalid-email') {
-      Alert.alert('This email is invalid email');
-    }
-    if (error instanceof Error) {
-      return rejectWithValue(error.message);
-    } else {
-      return rejectWithValue(error);
-    }
+
+    return rejectWithValue(error instanceof Error ? error.message : error);
   }
 });
 
@@ -77,14 +76,14 @@ export const logInUser = createAsyncThunk('auth/logInUser', async () => {
           phone: doc.data()?.phone || 'No Phone',
         };
       } else {
-        Alert.alert('this user is not found');
+        toast.error('this user is not found');
         throw new Error('User is not found');
       }
     } else {
       console.error('No user logged in');
       throw new Error('User not logged in');
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error in getUser thunk:', error.message);
     throw error;
   }
@@ -109,7 +108,7 @@ export const getUser = createAsyncThunk('getUser', async () => {
       }
     } else {
       await auth().signOut();
-      Alert.alert('Session Expired', 'Please log in again.');
+      toast.error('Please log in again.');
       throw new Error('User not logged in');
     }
   } catch (e) {
@@ -136,7 +135,7 @@ export const updateUser = createAsyncThunk(
         email: user?.email,
       });
       return user;
-    } catch (e: any) {
+    } catch (e) {
       console.error('Error updating Firestore document:', e.message);
       throw e;
     }
@@ -158,12 +157,12 @@ export const signInWithGoogle = createAsyncThunk('withGoogle', async () => {
       email: fullUser.email,
       phone: fullUser.phoneNumber,
     });
-    Alert.alert('Google Sign-In successful!');
+    toast.success('Google Sign-In successful!');
     return userCredential || null;
   } catch (error) {
-    const errorMessage: any =
+    const errorMessage =
       error instanceof Error ? error.message : 'Unknown error occurred';
-    Alert.alert('Google Sign-In Error', errorMessage);
+    toast.error('Google Sign-In Error', errorMessage);
   }
 });
 

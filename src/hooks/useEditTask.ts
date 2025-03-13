@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
-import {Alert} from 'react-native';
 import {updateTodo} from '../store/slices/TodoSlice';
 import {NativeProp} from '../types/types';
 import {useAppDispatch, useAppSelector} from './useRedux';
+import toast from 'react-hot-toast';
 
 const useEditTask = () => {
   const AllData =
@@ -20,6 +20,12 @@ const useEditTask = () => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState<boolean>(false);
   const [isDropdownVisible, setDropdownVisible] = useState<boolean>(false);
+  const newDate = moment(date).format('MMM DD, YYYY');
+  const [show, setShow] = useState<boolean>(false);
+
+  const showDatePicker = () => {
+    setShow(true);
+  };
 
   useEffect(() => {
     const newDate = moment(
@@ -30,32 +36,22 @@ const useEditTask = () => {
   }, [AllData]);
 
   const handleEditTask = () => {
-    if (title === undefined || title?.trim() === '') {
-      Alert.alert('Title is required');
-      return;
-    }
-    if (title.length <= 3) {
-      Alert.alert('Title should be at least 4 characters long');
-      return;
-    }
-    if (notes === undefined || notes.trim() === '') {
-      Alert.alert('Notes are required');
-      return;
-    }
-    if (notes.length <= 5) {
-      Alert.alert('Notes should be at least 6 characters long');
-      return;
-    }
-    if (selectedTag === '- Select tags -') {
-      Alert.alert('Please select a valid tag');
-      return;
-    }
-    if (!date) {
-      Alert.alert('Please select a date');
-      return;
-    }
-    if (new Date(date) < new Date()) {
-      Alert.alert('You cannot select a past date');
+    if (!title?.trim()) {
+      toast.error('Title is required');
+    } else if (title.length <= 3) {
+      toast.error('Title should be at least 4 characters long');
+    } else if (!notes?.trim()) {
+      toast.error('Notes are required');
+    } else if (notes.length <= 5) {
+      toast.error('Notes should be at least 6 characters long');
+    } else if (selectedTag === '- Select tags -') {
+      toast.error('Please select a valid tag');
+    } else if (!date) {
+      toast.error('Please select a date');
+    } else if (new Date(date) < new Date()) {
+      toast.error('You cannot select a past date');
+    } else {
+      // ✅ Sab kuch sahi hai, aage process karo
       return;
     }
 
@@ -86,6 +82,10 @@ const useEditTask = () => {
     handleEditTask,
     open,
     setOpen,
+    newDate,
+    show,
+    setShow,
+    showDatePicker,
     isDropdownVisible,
     setDropdownVisible,
   };

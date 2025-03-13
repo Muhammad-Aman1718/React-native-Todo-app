@@ -15,7 +15,6 @@ import {styles} from './registerStyle';
 import {REGISTER_INPUT_FIELDS} from '../../constant/constant';
 
 const Register: React.FC<Props> = ({navigation}) => {
-  const dispatch = useAppDispatch();
   const {
     fullName,
     setFullName,
@@ -27,6 +26,7 @@ const Register: React.FC<Props> = ({navigation}) => {
     setPassword,
     isCheck,
     setIsCheck,
+    dispatch,
     handleSignUp,
   } = useRegister();
   const registerValues = {

@@ -1,6 +1,6 @@
-import {Alert} from 'react-native';
 import {useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import toast from 'react-hot-toast';
 
 export default function useLogin() {
   const [fullName, setFullName] = useState<string>('');
@@ -9,20 +9,25 @@ export default function useLogin() {
   const [password, setPassword] = useState<string>('');
 
   const handleSignIp = async () => {
-    if (!/^[a-zA-Z\s]+$/.test(fullName)) {
-      Alert.alert('Full name should only contain letters and spaces!');
-      return;
-    }
-    if (email.trim() === '' || !email.includes('@')) {
-      Alert.alert('Email must be included and contain @!');
-      return;
-    }
-    if (phoneNumber.trim() === '' || phoneNumber.length >= 11) {
-      Alert.alert('Please enter a valid 10-digit phone number!');
-      return;
-    }
-    if (password.length < 6) {
-      Alert.alert('Password should be at least 6 characters long!');
+    if (
+      !/^[a-zA-Z\s]+$/.test(fullName) ||
+      !email.trim() ||
+      !email.includes('@') ||
+      !phoneNumber.trim() ||
+      phoneNumber.length >= 11 ||
+      password.length < 6
+    ) {
+      toast.error(
+        !/^[a-zA-Z\s]+$/.test(fullName)
+          ? 'Full name should only contain letters and spaces!'
+          : !email.trim() || !email.includes('@')
+          ? 'Email must be included and contain @!'
+          : !phoneNumber.trim() || phoneNumber.length >= 11
+          ? 'Please enter a valid 10-digit phone number!'
+          : 'Password should be at least 6 characters long!',
+      );
+    } else {
+      // ✅ Sab kuch sahi hai, aage process karo
       return;
     }
 
@@ -35,9 +40,9 @@ export default function useLogin() {
 
     try {
       await auth().signInWithEmailAndPassword(user.email, user.password);
-      Alert.alert('welcome back, you are Sign In');
+      toast.success('welcome back, you are Sign In');
     } catch (error) {
-      Alert.alert('Sorry, This user does not exist');
+      toast.error('Sorry, This user does not exist');
     }
   };
 
