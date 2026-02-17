@@ -1,79 +1,169 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# MyTodoApp 📱
 
-# Getting Started
+A modern and feature-rich Todo application built with React Native. Manage your tasks efficiently with authentication, task filtering, and reminders.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## 🚀 Features
 
-## Step 1: Start the Metro Server
+- **User Authentication**
+  - Email/Password registration and login
+  - Google Sign-In integration
+  - Secure password management
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- **Task Management**
+  - Add new tasks with title, notes, and tags
+  - Edit existing tasks
+  - Delete tasks
+  - Search and filter tasks
+  - Set date & time reminders
+  - Tag tasks as "Urgent" or "Normal"
 
-To start Metro, run the following command from the _root_ of your React Native project:
+- **User Profile**
+  - View profile information
+  - Edit profile details
+  - Change password
 
+- **User Interface**
+  - Modern and clean design
+  - Bottom tab navigation
+  - Splash screen
+  - Empty state handling
+  - Responsive layouts
+
+## 🛠️ Tech Stack
+
+- **React Native** 0.76.6
+- **TypeScript**
+- **Redux Toolkit** - State management
+- **Firebase**
+  - Authentication
+  - Cloud Firestore
+- **React Navigation** - Stack & Bottom Tabs
+- **Google Sign-In** - Social authentication
+- **React Native Vector Icons**
+- **Moment.js** - Date handling
+
+## 📋 Prerequisites
+
+- Node.js >= 18
+- React Native development environment set up
+- Android Studio (for Android) / Xcode (for iOS)
+- Firebase project configured
+- Google Sign-In credentials
+
+## 🔧 Installation
+
+1. Clone the repository:
 ```bash
-# using npm
-npm start
+git clone <repository-url>
+cd MyTodoApp
+```
 
-# OR using Yarn
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Configure Firebase:
+   - Add your `google-services.json` file in `android/app/`
+   - Configure Firebase in your project
+
+4. Set up environment variables:
+   - Add your Google Client ID for Google Sign-In
+
+## 🏃 Running the App
+
+### Start Metro Bundler:
+```bash
+npm start
+# or
 yarn start
 ```
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
+### Run on Android:
 ```bash
-# using npm
 npm run android
-
-# OR using Yarn
+# or
 yarn android
 ```
 
-### For iOS
-
+### Run on iOS:
 ```bash
-# using npm
 npm run ios
-
-# OR using Yarn
+# or
 yarn ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## 📁 Project Structure
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+```
+MyTodoApp/
+├── src/
+│   ├── components/      # Reusable components (Button, InputField, TodoCard, etc.)
+│   ├── screens/         # App screens (Home, Login, Register, Profile, etc.)
+│   ├── navigation/      # Navigation configuration
+│   ├── store/           # Redux store and slices
+│   ├── hooks/           # Custom React hooks
+│   ├── constant/        # Constants and configurations
+│   └── types/           # TypeScript type definitions
+├── App.tsx              # Main app component
+└── package.json         # Dependencies and scripts
+```
 
-## Step 3: Modifying your App
+## 🎯 Key Features Explained
 
-Now that you have successfully run the app, let's modify it.
+### Authentication Flow
+- Splash screen → Get Started → Login/Register
+- After authentication, navigate to main app with bottom tabs
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+### Task Management
+- Tasks are stored in Firebase Firestore
+- Each task includes: title, notes, tags, date/time, and user association
+- Real-time updates using Redux state management
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+### Navigation
+- Stack Navigation for authentication and detail screens
+- Bottom Tab Navigation for main app screens (Home, Add Task, Profile)
 
-## Congratulations! :tada:
+## 📝 Available Scripts
 
-You've successfully run and modified your React Native App. :partying_face:
+- `npm start` - Start Metro bundler
+- `npm run android` - Run on Android
+- `npm run ios` - Run on iOS
+- `npm test` - Run tests
+- `npm run lint` - Run ESLint
 
-### Now what?
+## 🔐 Firebase Setup
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+Make sure you have:
+1. Firebase project created
+2. Authentication enabled (Email/Password and Google)
+3. Firestore database initialized
+4. `google-services.json` configured for Android
+5. Google Sign-In client ID configured
 
-# Troubleshooting
+## 📱 Screens
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+- **Splash** - Initial loading screen
+- **Get Started** - Welcome screen
+- **Login** - User login
+- **Register** - New user registration
+- **Home** - Task list with search
+- **Add Task** - Create new task
+- **Edit Task** - Modify existing task
+- **Profile** - User profile view
+- **Edit Profile** - Update profile information
+- **Edit Password** - Change password
 
-# Learn More
+## 🤝 Contributing
 
-To learn more about React Native, take a look at the following resources:
+This is a bootcamp project. Feel free to explore and learn from the codebase.
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## 📄 License
+
+Private project for educational purposes.
+
+---
+
+Made with ❤️ using React Native
